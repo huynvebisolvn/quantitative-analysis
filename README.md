@@ -20,3 +20,9 @@ analysis performance and optimal in tradingview
 ![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/c8649546-aa03-4832-822f-9df627d02e3a)
 
 ![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/818bfa8a-9b6d-4cf1-a841-d6e95cdd8362)
+
+# aes
+```
+select pgp_sym_encrypt('password','key','compress-algo=1, cipher-algo=aes256'));
+select pgp_sym_decrypt('hash','key');
+```
