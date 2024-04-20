@@ -1,0 +1,109 @@
+//@version=5
+strategy('[BTC/USDT]', initial_capital=1000, default_qty_value=100, default_qty_type=strategy.percent_of_equity, currency='USD', pyramiding=0, overlay=true, commission_value=0.1)
+
+function_cmf(length) =>
+    ad = close == high and close == low or high == low ? 0 : (2 * close - low - high) / (high - low) * volume
+    math.sum(ad, length) / math.sum(volume, length)
+
+function_double_smooth(open, slow, fast) =>
+    fist_smooth = ta.ema(open, slow)
+    ta.ema(fist_smooth, fast)
+
+function_tsi(fast, slow) =>
+    pc = ta.change(close)
+    double_smoothed_pc = function_double_smooth(pc, slow, fast)
+    double_smoothed_abs_pc = function_double_smooth(math.abs(pc), slow, fast)
+    tsi = 100 * (double_smoothed_pc / double_smoothed_abs_pc)
+
+function_atr(length) =>
+    atr = 0.
+    Tr = math.max(high - low, math.max(math.abs(high - close[1]), math.abs(low - close[1])))
+    atr := nz(atr[1] + (Tr - atr[1]) / length, Tr)
+    atr
+
+function_trailing_stop(length, atr_multiplier, atr_period) =>
+    atr = function_atr(atr_period)
+    stop_loss_first = atr_multiplier * atr
+    iff = close - stop_loss_first
+    trailing_stop_high = ta.highest(iff, length)
+
+function_middle(len) => math.avg(ta.lowest(len), ta.highest(len))
+
+function_ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset) =>
+    tenkan = function_middle(param_tenkan_sen)
+    kijun = function_middle(param_kijun_sen)
+    senkou_span_a = math.avg(tenkan, kijun)
+    senkou_span_b = function_middle(param_senkou_span_b)
+    senkou_span_high = math.max(senkou_span_a[param_senkou_span_offset], senkou_span_b[param_senkou_span_offset])
+    chikouspanmom = ta.mom(close, param_chikou_span)
+    [ tenkan, kijun, senkou_span_a, senkou_span_b, senkou_span_high, chikouspanmom ]
+
+function_signal(cmf, tsi, trailing_stop, tenkan, kijun, senkou_span_a, senkou_span_b, senkou_span_high, chikouspanmom) =>
+    long_cmf = cmf > 0.1
+    long_tsi = tsi > 0
+    long_tenkan_cross_bull = tenkan > kijun
+    long_chikou_cross_bull = chikouspanmom > 0
+    long_price_above_kumo = close > senkou_span_high
+    long_trailing = close >= trailing_stop
+    long = long_cmf and long_tsi and long_tenkan_cross_bull and long_chikou_cross_bull and long_price_above_kumo and long_trailing
+
+function_exit(trailing_stop) => close <= trailing_stop
+
+// ###############################################################################
+
+//◀─── Chaikin Money Flow (CMF) ───►
+param_cmf = input(10, title="1- cmf length")
+
+cmf = function_cmf(param_cmf)
+plotshape(cmf, style=shape.triangleup, size=size.tiny, location=location.belowbar, color=color.new(color.green, 100), title='cmf')
+
+//◀─── True Strength Index (TSI) ───►
+param_tsi_fast = input(26, title="2- tsi fast length")
+param_tsi_slow  = input(33, title="3- tsi slow length")
+
+tsi = function_tsi(param_tsi_fast, param_tsi_slow)
+plotshape(tsi, style=shape.triangleup, size=size.tiny, location=location.belowbar, color=color.new(color.green, 100), title='tsi')
+
+//◀─── Trailing Stop By Average True Range (ATR) ───►
+param_atr_multiplier = input.float(2.9, '4- atr mutiplier', minval=1, step=0.1)
+param_atr_period = input.int(10, '5- atr period', minval=1, step=1)
+param_trail_length = input.int(109, '6- trailing length', minval=1, step=1)
+
+trailing_stop = function_trailing_stop(param_trail_length, param_atr_multiplier, param_atr_period)
+plot(true ? trailing_stop : na, style=plot.style_linebr, color=color.new(color.yellow, 30), linewidth=1, title='trailingstop')
+
+//◀─── Ichimoku Cloud ───►
+param_tenkan_sen         = input(14, title="7- ichimoku tenkan sen length")
+param_kijun_sen          = input(68, title="8- ichimoku kijun sen length")
+param_senkou_span_b      = input(167, title="9- ichimoku senkou span b length")
+param_chikou_span        = input(16, title="10- ichimoku chikou span offset")
+param_senkou_span_offset = input(32, title="11- ichimoku senkou span offset")
+
+[ tenkan, kijun, senkou_span_a, senkou_span_b, senkou_span_high, chikouspanmom ] = function_ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
+plot(tenkan, color=color.new(#0496ff, 100), title='tenkansen')
+plot(kijun, color=color.new(#991515, 100), title='kijunsen')
+sa = plot(senkou_span_a, offset=param_senkou_span_offset, color=color.new(color.green, 80), title='senkouspana')
+sb = plot(senkou_span_b, offset=param_senkou_span_offset, color=color.new(color.red, 80), title='senkouspanb')
+fill(sa, sb, color=senkou_span_a > senkou_span_b ? color.rgb(67, 160, 71, 90) : color.rgb(244, 67, 54, 90), title='cloudcolor')
+plot(close, offset=param_chikou_span, color=color.new(color.purple, 100), title='chikouspan')
+plotshape(senkou_span_high, style=shape.triangleup, size=size.tiny, location=location.belowbar, color=color.new(color.green, 100), title='senkouspanhigh')
+plotshape(chikouspanmom, style=shape.triangleup, size=size.tiny, location=location.belowbar, color=color.new(color.green, 100), title='chikouspanmom')
+
+// ###############################################################################
+
+//◀─── GENERAL SIGNAL ───►
+long = function_signal(cmf, tsi, trailing_stop, tenkan, kijun, senkou_span_a, senkou_span_b, senkou_span_high, chikouspanmom)
+plotshape(long, style=shape.triangleup, size=size.tiny, location=location.abovebar, color=color.new(color.green, 80), title='long')
+long_close = function_exit(trailing_stop)
+
+if long
+    strategy.entry('long', strategy.long, comment="long")
+if long_close
+    strategy.close('long', comment="long_close")
+
+// ###############################################################################
+//◀─── Plot report ───►
+printTable(txt) => var table t = table.new(position.top_right, 1, 1), table.cell(t, 0, 0, txt, bgcolor=color.new(color.yellow, 0))
+printTable("PROFIT: " + str.tostring(math.round(strategy.netprofit_percent, 2)) + "%" + "\n" + "DRAWDOWN: " + str.tostring(math.round(strategy.max_drawdown_percent, 2)) + "%")
+
+

@@ -1,0 +1,6 @@
+numpy
+pandas
+pandas_ta
+lightweight_charts
+vectorbt
+ccxt==3.0.10
