@@ -21,13 +21,11 @@ def plot_histogram(_name, _color):
 
 if __name__ == '__main__':
     # run system
-    optimal()
+    df = optimal()
 
     chart = Chart()
     chart.legend(True)
     chart.topbar.textbox('symbol', 'BTC-USDT (2h)')
-
-    df = pd.read_csv('./data/ohlcv_ta.csv')
 
     # plot_histogram('cmf', 'rgba(243, 247, 70, 0.5)')
     # plot_histogram('tsi', 'rgba(44, 130, 201, 0.5)')
