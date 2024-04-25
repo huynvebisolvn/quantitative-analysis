@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import pandas_ta as ta
 import vectorbt as vbt
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 from vectorbt.portfolio.enums import SizeType
 from datetime import datetime
 from lib_ccxt import fetch_ohlcv
@@ -120,11 +122,57 @@ def review_performance(temp_df):
 
 def all_performance():
     df = optimal()
-    res = review_performance(df)
+    per = review_performance(df)
     # overall performance
-    print(res.stats())
+    stats = per.stats()
 
     # list of trade
-    print(res.positions.records_readable.sort_values(by='Position Id', ascending=False))
-    fig = res.plot(subplots = ['trades', 'cum_returns', 'drawdowns'])
+    trades = per.positions.records_readable.sort_values(by='Position Id', ascending=False)
+
+    fig = make_subplots(
+        rows=2, cols=1,
+        # shared_xaxes=True,
+        vertical_spacing=0.03,
+        specs=[[{"type": "table"}], [{"type": "table"}]]
+    )
+
+    fig.add_trace(
+        go.Table(
+            header=dict(
+                values=["Total Return [%]", "Max Drawdown [%]", "Total Trades", "Win Rate [%]", "Profit Factor", "Sharpe Ratio"],
+                font=dict(size=20),
+                align="center"
+            ),
+            cells=dict(
+                values=[stats['Total Return [%]'], stats['Max Drawdown [%]'], stats['Total Trades'], stats['Win Rate [%]'], stats['Profit Factor'], stats['Sharpe Ratio']],
+                font=dict(size=15),
+                align = "center")
+        ),
+        row=1, col=1
+    )
+
+    position_id = trades['Position Id'].values
+    entry_timestamp = trades['Entry Timestamp'].values
+    entry_price = trades['Avg Entry Price'].values
+    exit_timestamp = trades['Exit Timestamp'].values
+    exit_price = trades['Avg Exit Price'].values
+
+    fig.add_trace(
+        go.Table(
+            
+            header=dict(
+                values=["Position Id","Entry Timestamp", "Entry Price", "Exit Timestamp", "Avg Exit Price"],
+                font=dict(size=20),
+                align="center"
+            ),
+            cells=dict(
+                values=[
+                    position_id, entry_timestamp, entry_price, exit_timestamp, exit_price
+                ],
+                font=dict(size=15),
+                align = "center")
+        ),
+        row=2, col=1
+    )
+ 
     fig.show()
