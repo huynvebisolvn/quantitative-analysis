@@ -6,17 +6,6 @@ from lib_ta import optimal, review_performance
 
 pd.options.plotting.backend = "plotly"
 
-def all_performance():
-    df = optimal()
-    res = review_performance(df)
-    # overall performance
-    print(res.stats())
-
-    # list of trade
-    print(res.positions.records_readable.sort_values(by='Position Id', ascending=False))
-    fig = res.plot(subplots = ['trades', 'cum_returns', 'drawdowns'])
-    fig.show()
-
 def create_optimal_by_step():
     rs = []
     for i in range(300):
@@ -68,5 +57,4 @@ def create_optimal_by_step():
     fig.update_layout(showlegend=False, title_text="Quantitative Analysis")
     fig.show()
 
-# all_performance()
 create_optimal_by_step()

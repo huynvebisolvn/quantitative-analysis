@@ -117,3 +117,14 @@ def review_performance(temp_df):
                                     size_type=SizeType.Percent,
                                     fixed_fees=0.01)
     return res
+
+def all_performance():
+    df = optimal()
+    res = review_performance(df)
+    # overall performance
+    print(res.stats())
+
+    # list of trade
+    print(res.positions.records_readable.sort_values(by='Position Id', ascending=False))
+    fig = res.plot(subplots = ['trades', 'cum_returns', 'drawdowns'])
+    fig.show()

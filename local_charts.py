@@ -1,6 +1,6 @@
 import pandas as pd
 from lightweight_charts import Chart
-from lib_ta import optimal, review_performance
+from lib_ta import optimal, review_performance, all_performance
 
 def plot_marker(values):
     res = []
@@ -19,6 +19,11 @@ def plot_histogram(_name, _color):
     histogram = chart.create_histogram(name=_name, color=_color, scale_margin_bottom=0.98)
     histogram.set(df)
 
+def performance(chart):
+    action = chart.topbar['Analysis'].value
+    if action == 'performance':
+        all_performance()
+
 if __name__ == '__main__':
     # run system
     df = optimal()
@@ -26,6 +31,8 @@ if __name__ == '__main__':
     chart = Chart()
     chart.legend(True)
     chart.topbar.textbox('symbol', 'BTC-USDT (2h)')
+    chart.topbar.switcher('Analysis',('Analysis', 'performance'),
+                          func=performance)
 
     # plot_histogram('cmf', 'rgba(243, 247, 70, 0.5)')
     # plot_histogram('tsi', 'rgba(44, 130, 201, 0.5)')
