@@ -131,24 +131,8 @@ def all_performance():
 
     fig = make_subplots(
         rows=2, cols=1,
-        # shared_xaxes=True,
         vertical_spacing=0.03,
         specs=[[{"type": "table"}], [{"type": "table"}]]
-    )
-
-    fig.add_trace(
-        go.Table(
-            header=dict(
-                values=["Total Return [%]", "Max Drawdown [%]", "Total Trades", "Win Rate [%]", "Profit Factor", "Sharpe Ratio"],
-                font=dict(size=20),
-                align="center"
-            ),
-            cells=dict(
-                values=[stats['Total Return [%]'], stats['Max Drawdown [%]'], stats['Total Trades'], stats['Win Rate [%]'], stats['Profit Factor'], stats['Sharpe Ratio']],
-                font=dict(size=15),
-                align = "center")
-        ),
-        row=1, col=1
     )
 
     position_id = trades['Position Id'].values
@@ -169,6 +153,21 @@ def all_performance():
                 values=[
                     position_id, entry_timestamp, entry_price, exit_timestamp, exit_price
                 ],
+                font=dict(size=15),
+                align = "center")
+        ),
+        row=1, col=1
+    )
+
+    fig.add_trace(
+        go.Table(
+            header=dict(
+                values=["Total Return [%]", "Max Drawdown [%]", "Total Trades", "Win Rate [%]", "Profit Factor", "Sharpe Ratio"],
+                font=dict(size=20),
+                align="center"
+            ),
+            cells=dict(
+                values=[stats['Total Return [%]'], stats['Max Drawdown [%]'], stats['Total Trades'], stats['Win Rate [%]'], stats['Profit Factor'], stats['Sharpe Ratio']],
                 font=dict(size=15),
                 align = "center")
         ),
