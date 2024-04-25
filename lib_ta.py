@@ -23,7 +23,8 @@ def cmf(length):
 
 def tsi(fastlength, slowlength):
     tsi = df.ta.tsi(fast=fastlength, slow=slowlength, scalar=100)
-    df['tsi'] = tsi['TSI_26_33_13']
+    # df['tsi'] = tsi['TSI_26_33_13']
+    df['tsi'] = tsi[tsi.name]
 
 def atr(length):
     atr = df.ta.atr(length=length, mamode='rma')
@@ -97,4 +98,4 @@ def optimal(param_cmf = 10,
     trailing_stop(param_atr_multiplier, param_trail_length)
     ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
     signal()
-    df.to_csv('./data/ohlcv_ta.csv', index=False)
+    return df
