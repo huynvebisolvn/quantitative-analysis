@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import pandas_ta as ta
+import vectorbt as vbt
+from vectorbt.portfolio.enums import SizeType
 from datetime import datetime
 from lib_ccxt import fetch_ohlcv
 import pytz
@@ -84,12 +86,12 @@ def signal():
 def optimal(param_cmf = 10,
             param_tsi_fast = 26,
             param_tsi_slow = 33,
-            param_atr_period = 10,
+            param_atr_period = 13,
             param_atr_multiplier = 2.9,
-            param_trail_length = 109,
+            param_trail_length = 114,
             param_tenkan_sen = 14,
             param_kijun_sen = 68,
-            param_senkou_span_b = 167,
+            param_senkou_span_b = 187,
             param_chikou_span = 16,
             param_senkou_span_offset = 32):
     cmf(param_cmf)
@@ -99,3 +101,19 @@ def optimal(param_cmf = 10,
     ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
     signal()
     return df
+
+def review_performance(temp_df):
+    temp_df = temp_df.set_index("time")
+    close = temp_df.get('close')
+    entries = temp_df['long']
+    exits = temp_df['close_long']
+    res = vbt.Portfolio.from_signals(close,
+                                    entries,
+                                    exits,
+                                    freq='2h',
+                                    init_cash=1000,
+                                    direction='longonly',
+                                    size=1,
+                                    size_type=SizeType.Percent,
+                                    fixed_fees=0.01)
+    return res

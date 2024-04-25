@@ -1,14 +1,14 @@
 import pandas as pd
 from lightweight_charts import Chart
-from lib_ta import optimal
-import numpy as np
+from lib_ta import optimal, review_performance
 
-def plot_marker():
+def plot_marker(values):
     res = []
-    list_long = np.where(df['long'] == True, df['time'], None)
-    list_long_none = [i for i in list_long if i is not None]
-    for item in list_long_none:
-        res.append({"time": item, "position": "above", "shape": "arrow_up", "color": "#A5DD9B", "text": ""})
+    for value in values:
+        if value[6] == 'Buy':
+            res.append({"time": value[2], "position": "above", "shape": "arrow_up", "color": "#4CCD99", "text": "Buy"})
+        else:
+            res.append({"time": value[2], "position": "above", "shape": "arrow_down", "color": "#FF204E", "text": "Sell"})
     return res
 
 def plot_line(_name, _color):
@@ -40,9 +40,12 @@ if __name__ == '__main__':
 
     # plot_line('chikouspanmom', 'rgba(140, 20, 252, 0.5)')
 
-    plot_histogram('long', 'rgba(3, 201, 169, 1)')
-    plot_histogram('close_long', 'rgba(214, 69, 65, 0.5)')
+    # plot_histogram('long', 'rgba(3, 201, 169, 1)')
+    # plot_histogram('close_long', 'rgba(214, 69, 65, 0.5)')
 
     chart.set(df)
-    chart.marker_list(plot_marker())
+
+    res = review_performance(df)
+    chart.marker_list(plot_marker(res.orders.records_readable.values))
+
     chart.show(block=True)

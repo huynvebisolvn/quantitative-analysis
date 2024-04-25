@@ -6,7 +6,7 @@ import json
 import time
 
 def inputCookie():
-    with open('cookie.json') as f:
+    with open('./cookie/cookie.json') as f:
         d = json.load(f)
         for cookie in d['cookies']:
             driver.add_cookie({"name": cookie['name'], "value": cookie['value']})

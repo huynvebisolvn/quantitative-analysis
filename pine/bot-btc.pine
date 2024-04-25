@@ -66,8 +66,8 @@ plotshape(tsi, style=shape.triangleup, size=size.tiny, location=location.belowba
 
 //◀─── Trailing Stop By Average True Range (ATR) ───►
 param_atr_multiplier = input.float(2.9, '4- atr mutiplier', minval=1, step=0.1)
-param_atr_period = input.int(10, '5- atr period', minval=1, step=1)
-param_trail_length = input.int(109, '6- trailing length', minval=1, step=1)
+param_atr_period = input.int(13, '5- atr period', minval=1, step=1)
+param_trail_length = input.int(114, '6- trailing length', minval=1, step=1)
 
 trailing_stop = function_trailing_stop(param_trail_length, param_atr_multiplier, param_atr_period)
 plot(true ? trailing_stop : na, style=plot.style_linebr, color=color.new(color.yellow, 30), linewidth=1, title='trailingstop')
@@ -75,7 +75,7 @@ plot(true ? trailing_stop : na, style=plot.style_linebr, color=color.new(color.y
 //◀─── Ichimoku Cloud ───►
 param_tenkan_sen         = input(14, title="7- ichimoku tenkan sen length")
 param_kijun_sen          = input(68, title="8- ichimoku kijun sen length")
-param_senkou_span_b      = input(167, title="9- ichimoku senkou span b length")
+param_senkou_span_b      = input(187, title="9- ichimoku senkou span b length")
 param_chikou_span        = input(16, title="10- ichimoku chikou span offset")
 param_senkou_span_offset = input(32, title="11- ichimoku senkou span offset")
 
