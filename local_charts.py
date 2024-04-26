@@ -53,6 +53,7 @@ if __name__ == '__main__':
     chart.set(df)
 
     res = review_performance(df)
+    print(res.stats())
     chart.marker_list(plot_marker(res.orders.records_readable.values))
 
     chart.show(block=True)
