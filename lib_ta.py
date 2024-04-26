@@ -17,10 +17,6 @@ def convert_time():
     time = df['time'].apply(datetime.fromtimestamp, tz=pytz.utc)
     df['time'] = time
 
-def convert_time():
-    time = df['time'].apply(datetime.fromtimestamp, tz=pytz.utc)
-    df['time'] = time
-
 def cmf(length):
     cmf = df.ta.cmf(length=length)
     df['cmf'] = cmf
