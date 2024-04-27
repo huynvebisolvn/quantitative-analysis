@@ -6,10 +6,14 @@ quantitative analysis for trading
 pip install -r requirements.txt
 ```
 
+# Overview of data flow
+
+![data_flow](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/270bd072-db23-4a77-a3d7-7f4c04c0c29c)
+
 # local_charts.py
 lightweight charts in local - like tradingview charts
 
-![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/912c0b52-1032-4275-b17d-eee1756956c7)
+![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/7e5b519c-28f8-4b54-b272-ab81c4279ecf)
 
 # local_vectorbt.py
 ## analysis performance for trading strategy

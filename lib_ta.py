@@ -98,6 +98,7 @@ def optimal(param_cmf = 10,
     trailing_stop(param_atr_multiplier, param_trail_length)
     ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
     signal()
+    df.to_csv('./data/ohlcv_ta.csv', index=False)
     return df
 
 def review_performance(temp_df):
