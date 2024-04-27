@@ -8,6 +8,9 @@ exchange = ccxt.binance({ 'apiKey': API_KEY, 'secret': API_SECRET, 'enableRateLi
 
 def fetch_ohlcv():
     df_old = pd.read_csv('./data/ohlcv.csv')
+    # delete incomplete data lines
+    df_old = df_old[:-1]
+
     last_Time = df_old.iloc[-1]['time']
     from_timestamp = exchange.parse8601(last_Time)
 
