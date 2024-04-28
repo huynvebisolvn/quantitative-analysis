@@ -10,8 +10,12 @@ from lib_ccxt import fetch_ohlcv
 import pytz
 
 # fetch new ohlcv
-fetch_ohlcv()
-df = pd.read_csv('./data/ohlcv.csv')
+df = fetch_ohlcv('ohlcv.csv')
+
+# filter by year
+# timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)
+# df['year'] = timeConvert.dt.year
+# df = df.loc[df['year'] == 2022]
 
 def convert_time():
     time = df['time'].apply(datetime.fromtimestamp, tz=pytz.utc)

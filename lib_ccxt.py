@@ -6,8 +6,8 @@ API_KEY = 'kg9qTIJ3s0rodaAID0Q75RzETq6gQfFKOj7XT5AG6Koy8FQXwfzQ1glGoNTfLyFI'
 API_SECRET = '5dyV8XTuuxaSLBjMoah5FPwZMOalMDVQefWKqqR9cj8UtETYGEfbaWqkcrmMyoMy'
 exchange = ccxt.binance({ 'apiKey': API_KEY, 'secret': API_SECRET, 'enableRateLimit': True, 'options': {'defaultType': 'spot', 'adjustForTimeDifference': True } })
 
-def fetch_ohlcv():
-    df_old = pd.read_csv('./data/ohlcv.csv')
+def fetch_ohlcv(csv):
+    df_old = pd.read_csv('./data/'+csv)
     # delete incomplete data lines
     df_old = df_old[:-1]
 
@@ -22,4 +22,5 @@ def fetch_ohlcv():
         df_new = pd.DataFrame(array, columns=['time','open','high','low','close','volume'])
         df_new['time'] = pd.to_datetime(df_new.time, unit='ms')
         out = pd.concat([df_old, df_new]).drop_duplicates().reset_index(drop=True)
-        out.to_csv('./data/ohlcv.csv', index=False)
+        out.to_csv('./data/'+csv, index=False)
+        return out
