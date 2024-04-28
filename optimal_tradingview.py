@@ -75,7 +75,8 @@ def convertReportValue(str):
     num = strList[len(strList)-1]
     num1 = num.replace(" ", "")
     num2 = num1.replace("%", "")
-    return float(num2)
+    num3 = num2.replace("−", "-")
+    return float(num3)
 
 def inputcheck(index, range1, range2, step):
     try:
