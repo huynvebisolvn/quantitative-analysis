@@ -79,7 +79,7 @@ def signal(df):
 
     df['close_long'] = np.where(df['close'] <= df['trailingstop'], True, False)
 
-def optimal(file = 'BTCUSDT.csv', year = 2010,
+def optimal(file = 'BTCUSDT.csv', year = 2024,
             param_cmf = 10,
             param_tsi_fast = 26,
             param_tsi_slow = 33,
