@@ -17,9 +17,11 @@ df = fetch_ohlcv('ohlcv.csv')
 # df['year'] = timeConvert.dt.year
 # df = df.loc[df['year'] == 2022]
 
-def convert_time():
-    time = df['time'].apply(datetime.fromtimestamp, tz=pytz.utc)
-    df['time'] = time
+def convert_time(csv):
+    df_convert = pd.read_csv('./data/'+csv)
+    time = df_convert['time'].apply(datetime.fromtimestamp, tz=pytz.utc)
+    df_convert['time'] = time
+    df_convert.to_csv('./data/'+csv, index=False)
 
 def cmf(length):
     cmf = df.ta.cmf(length=length)
@@ -102,7 +104,7 @@ def optimal(param_cmf = 10,
     trailing_stop(param_atr_multiplier, param_trail_length)
     ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
     signal()
-    df.to_csv('./data/ohlcv_ta.csv', index=False)
+    # df.to_csv('./data/temp/ohlcv_ta.csv', index=False)
     return df
 
 def review_performance(temp_df):
