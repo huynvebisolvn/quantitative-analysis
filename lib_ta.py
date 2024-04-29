@@ -93,7 +93,7 @@ def optimal(file = 'BTCUSDT.csv', year = 2024,
             param_senkou_span_offset = 32):
 
     # fetch new ohlcv
-    df = fetch_ohlcv(file)
+    df = fetch_ohlcv(file, block_fetch=True)
 
     # filter by year
     timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)
