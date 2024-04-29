@@ -1,10 +1,20 @@
 import numpy as np
 import pandas as pd
 from plotly.subplots import make_subplots
+import plotly.express as px
 import plotly.graph_objects as go
 from lib_ta import optimal, review_performance
 
 pd.options.plotting.backend = "plotly"
+
+def get_range_y_max(df, colum):
+    rs = {}
+    max = df.groupby(['year'])[colum].max()
+    yearList = max.index.values
+    maxList = max.values
+    for i in range(len(yearList)):
+        rs[str(yearList[i])] = maxList[i]
+    return rs
 
 def plotly_bar(df, file, year):
     fig = make_subplots(horizontal_spacing=0.02,
@@ -110,4 +120,15 @@ def create_optimal_transition(file):
     df_for_all = pd.DataFrame(rs_for_all)
     df_for_all.to_csv('./data/temp/'+'transition_'+file, index=False)
 
-create_optimal_transition('BTCUSDT.csv')
+def create_transition_chart(file, colum):
+    df = pd.read_csv('./data/temp/'+'transition_'+file)
+    x_max = df['value'].max()
+    range_map = get_range_y_max(df, colum)
+
+    fig = px.bar(df, x="value", y=colum, animation_frame="year", range_x=[0, x_max], range_y=[0, range_map['2011']])
+    for f in fig.frames:
+        f.layout.update(yaxis_range = [0, range_map[f.name]])
+    fig.show()
+
+# create_optimal_transition('BTCUSD.csv')
+create_transition_chart('BTCUSD.csv', 'total_return')
