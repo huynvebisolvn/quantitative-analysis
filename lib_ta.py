@@ -98,7 +98,7 @@ def optimal(file = 'BTCUSDT.csv', year = 2010,
     # filter by year
     timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)
     df['year'] = timeConvert.dt.year
-    df = df.loc[df['year'] >= year]
+    df = df.loc[df['year'] <= year]
 
     cmf(df, param_cmf)
     tsi(df, param_tsi_fast, param_tsi_slow)

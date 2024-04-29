@@ -11,6 +11,9 @@ def fetch_ohlcv(csv):
     # delete incomplete data lines
     df_old = df_old[:-1]
 
+    if csv == 'BTCUSD.csv':
+        return df_old
+
     last_Time = df_old.iloc[-1]['time']
     from_timestamp = exchange.parse8601(last_Time)
 
