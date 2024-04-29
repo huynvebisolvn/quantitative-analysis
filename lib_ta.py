@@ -9,38 +9,30 @@ from datetime import datetime
 from lib_ccxt import fetch_ohlcv
 import pytz
 
-# fetch new ohlcv
-df = fetch_ohlcv('ohlcv.csv')
-
-# filter by year
-# timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)
-# df['year'] = timeConvert.dt.year
-# df = df.loc[df['year'] == 2022]
-
 def convert_time(csv):
     df_convert = pd.read_csv('./data/'+csv)
     time = df_convert['time'].apply(datetime.fromtimestamp, tz=pytz.utc)
     df_convert['time'] = time
     df_convert.to_csv('./data/'+csv, index=False)
 
-def cmf(length):
+def cmf(df, length):
     cmf = df.ta.cmf(length=length)
     df['cmf'] = cmf
 
-def tsi(fastlength, slowlength):
+def tsi(df, fastlength, slowlength):
     tsi = df.ta.tsi(fast=fastlength, slow=slowlength, scalar=100)
     # df['tsi'] = tsi['TSI_26_33_13']
     df['tsi'] = tsi[tsi.name]
 
-def atr(length):
+def atr(df, length):
     atr = df.ta.atr(length=length, mamode='rma')
     df['atr'] = atr
 
-def trailing_stop(multiplier, length):
+def trailing_stop(df, multiplier, length):
     stoploss_origin = df['close'] - (multiplier * df['atr'])
     df['trailingstop'] = stoploss_origin.rolling(length).max()
 
-def ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset):
+def ichimoku(df, param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset):
     ##Tenkan Line
     tenkan_window = param_tenkan_sen
     tenkan_high = df['high'].rolling(tenkan_window).max()
@@ -70,7 +62,7 @@ def ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chiko
     chikouspanmom = df.ta.mom(length=chikou_span_offset)
     df['chikouspanmom'] = chikouspanmom
 
-def signal():
+def signal(df):
     df['long_cmf'] = np.where(df['cmf'] > 0.1, True, False)
     df['long_tsi'] = np.where(df['tsi'] > 0, True, False)
     df['long_tenkan_cross_bull'] = np.where(df['tenkansen'] > df['kijunsen'], True, False)
@@ -87,7 +79,8 @@ def signal():
 
     df['close_long'] = np.where(df['close'] <= df['trailingstop'], True, False)
 
-def optimal(param_cmf = 10,
+def optimal(file = 'BTCUSDT.csv', year = 2010,
+            param_cmf = 10,
             param_tsi_fast = 26,
             param_tsi_slow = 33,
             param_atr_period = 13,
@@ -98,12 +91,21 @@ def optimal(param_cmf = 10,
             param_senkou_span_b = 187,
             param_chikou_span = 16,
             param_senkou_span_offset = 32):
-    cmf(param_cmf)
-    tsi(param_tsi_fast, param_tsi_slow)
-    atr(param_atr_period)
-    trailing_stop(param_atr_multiplier, param_trail_length)
-    ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
-    signal()
+
+    # fetch new ohlcv
+    df = fetch_ohlcv(file)
+
+    # filter by year
+    timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)
+    df['year'] = timeConvert.dt.year
+    df = df.loc[df['year'] >= year]
+
+    cmf(df, param_cmf)
+    tsi(df, param_tsi_fast, param_tsi_slow)
+    atr(df, param_atr_period)
+    trailing_stop(df, param_atr_multiplier, param_trail_length)
+    ichimoku(df, param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)
+    signal(df)
     # df.to_csv('./data/temp/ohlcv_ta.csv', index=False)
     return df
 

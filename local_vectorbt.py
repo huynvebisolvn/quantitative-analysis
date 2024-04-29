@@ -10,7 +10,19 @@ def create_optimal_by_step():
     rs = []
     for i in range(300):
         # 9;17;26;33;42;65;76;129;172; 200~257
-        temp_df = optimal(param_trail_length=i)
+        temp_df = optimal(
+            file = 'BTCUSD.csv', year = 2017,
+            param_cmf = 10,
+            param_tsi_fast = 26,
+            param_tsi_slow = 33,
+            param_atr_period = 13,
+            param_atr_multiplier = 2.9,
+            param_trail_length = 114,
+            param_tenkan_sen = 14,
+            param_kijun_sen = 68,
+            param_senkou_span_b = 187,
+            param_chikou_span = 16,
+            param_senkou_span_offset = 32)
         performance = review_performance(temp_df)
         stats = performance.stats()
         rs.append({
