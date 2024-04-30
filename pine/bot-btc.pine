@@ -52,14 +52,14 @@ function_exit(trailing_stop) => close <= trailing_stop
 // ###############################################################################
 
 //◀─── Chaikin Money Flow (CMF) ───►
-param_cmf = input(10, title="1- cmf length")
+param_cmf = input(9, title="1- cmf length")
 
 cmf = function_cmf(param_cmf)
 plotshape(cmf, style=shape.triangleup, size=size.tiny, location=location.belowbar, color=color.new(color.green, 100), title='cmf')
 
 //◀─── True Strength Index (TSI) ───►
-param_tsi_fast = input(26, title="2- tsi fast length")
-param_tsi_slow  = input(33, title="3- tsi slow length")
+param_tsi_fast = input(38, title="2- tsi fast length")
+param_tsi_slow  = input(39, title="3- tsi slow length")
 
 tsi = function_tsi(param_tsi_fast, param_tsi_slow)
 plotshape(tsi, style=shape.triangleup, size=size.tiny, location=location.belowbar, color=color.new(color.green, 100), title='tsi')
@@ -67,16 +67,16 @@ plotshape(tsi, style=shape.triangleup, size=size.tiny, location=location.belowba
 //◀─── Trailing Stop By Average True Range (ATR) ───►
 param_atr_multiplier = input.float(2.9, '4- atr mutiplier', minval=1, step=0.1)
 param_atr_period = input.int(13, '5- atr period', minval=1, step=1)
-param_trail_length = input.int(114, '6- trailing length', minval=1, step=1)
+param_trail_length = input.int(113, '6- trailing length', minval=1, step=1)
 
 trailing_stop = function_trailing_stop(param_trail_length, param_atr_multiplier, param_atr_period)
 plot(true ? trailing_stop : na, style=plot.style_linebr, color=color.new(color.yellow, 30), linewidth=1, title='trailingstop')
 
 //◀─── Ichimoku Cloud ───►
-param_tenkan_sen         = input(14, title="7- ichimoku tenkan sen length")
-param_kijun_sen          = input(68, title="8- ichimoku kijun sen length")
-param_senkou_span_b      = input(187, title="9- ichimoku senkou span b length")
-param_chikou_span        = input(16, title="10- ichimoku chikou span offset")
+param_tenkan_sen         = input(10, title="7- ichimoku tenkan sen length")
+param_kijun_sen          = input(67, title="8- ichimoku kijun sen length")
+param_senkou_span_b      = input(185, title="9- ichimoku senkou span b length")
+param_chikou_span        = input(74, title="10- ichimoku chikou span offset")
 param_senkou_span_offset = input(32, title="11- ichimoku senkou span offset")
 
 [ tenkan, kijun, senkou_span_a, senkou_span_b, senkou_span_high, chikouspanmom ] = function_ichimoku(param_tenkan_sen, param_kijun_sen, param_senkou_span_b, param_chikou_span, param_senkou_span_offset)

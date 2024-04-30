@@ -80,16 +80,16 @@ def signal(df):
     df['close_long'] = np.where(df['close'] <= df['trailingstop'], True, False)
 
 def optimal(file = 'BTCUSDT.csv', year = 2024,
-            param_cmf = 10,
-            param_tsi_fast = 26,
-            param_tsi_slow = 33,
+            param_cmf = 9,
+            param_tsi_fast = 38,
+            param_tsi_slow = 39,
             param_atr_period = 13,
             param_atr_multiplier = 2.9,
-            param_trail_length = 114,
-            param_tenkan_sen = 14,
-            param_kijun_sen = 68,
-            param_senkou_span_b = 187,
-            param_chikou_span = 16,
+            param_trail_length = 113,
+            param_tenkan_sen = 10,
+            param_kijun_sen = 67,
+            param_senkou_span_b = 185,
+            param_chikou_span = 74,
             param_senkou_span_offset = 32):
 
     # fetch new ohlcv
