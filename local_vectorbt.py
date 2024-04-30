@@ -91,11 +91,11 @@ def get_performance_in_range(file, year=2024, max_range=300, is_plot=True):
             param_tsi_slow = 39, #33 37 39
             param_atr_period = 13, #13
             param_atr_multiplier = 2.9, #2.9
-            param_trail_length = 113, # 114 #113
+            param_trail_length = i, # 114 #113
             param_tenkan_sen = 10, #14 10
             param_kijun_sen = 67, #68 #67
             param_senkou_span_b = 185, #187 185
-            param_chikou_span = i, #16 74
+            param_chikou_span = 74, #16 74
             param_senkou_span_offset = 32 #32
         )
         performance = review_performance(temp_df)
