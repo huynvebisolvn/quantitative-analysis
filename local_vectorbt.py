@@ -121,7 +121,7 @@ def get_performance_in_range(file, year=2024, max_range=300, is_plot=True):
 
 def create_optimal_transition(file, max_range=300):
     rs_for_all = []
-    for year in range(2017, 2025):
+    for year in range(2011, 2025):
         rs = get_performance_in_range(file=file, year=year, max_range=max_range, is_plot=False)
         rs_for_all = rs_for_all + rs
     df_for_all = pd.DataFrame(rs_for_all)
@@ -140,6 +140,7 @@ def create_transition_chart(file, colum):
         f.layout.update(yaxis_range = [0, range_map[f.name]])
     fig.show()
 
-# get_performance_in_range('BTCUSDT.csv', year=2024, max_range=300, is_plot=True)
-# create_optimal_transition('BTCUSDT.csv', max_range = 300)
-create_transition_chart('BTCUSDT.csv', 'total_return')
+get_performance_in_range('BTCUSDT.csv', year=2024, max_range=300, is_plot=True)
+
+create_optimal_transition('BTCUSD.csv', max_range = 300)
+create_transition_chart('BTCUSD.csv', 'total_return')
