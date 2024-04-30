@@ -20,6 +20,8 @@ lightweight charts in local - like tradingview charts
 
 ![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/892b52aa-c1eb-4b9f-8ffc-bf7cbed11eee)
 
+![transition](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/28b1d1c7-012b-4dc8-a924-0243e20ed40d)
+
 ## backtest for trading strategy
 
 ![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/05f317f5-18a6-4540-8007-233e3a3a8a81)
