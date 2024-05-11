@@ -27,6 +27,9 @@ analysis performance and optimal in tradingview by selenium
 
 https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/607dddb7-a284-4ebb-a8fd-caa6a7063e8d
 
+# appleScript
+do shell script "cd /Users/nguyenhuy/Documents/GitHub/quantitative-analysis/; /opt/homebrew/bin/python3.11 /Users/nguyenhuy/Documents/GitHub/quantitative-analysis/local_charts.py" 
+
 # aes
 ```
 select pgp_sym_encrypt('password','key','compress-algo=1, cipher-algo=aes256'));
