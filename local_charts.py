@@ -56,11 +56,12 @@ if __name__ == '__main__':
     # list of trade
     trades = per.positions.records_readable.sort_values(by='Position Id', ascending=False)
     # format
-    trades = trades.drop(columns=['Column', 'Size', 'Entry Fees', 'Exit Fees', 'Status'])
+    trades = trades.drop(columns=['Column', 'Size', 'Entry Fees', 'PnL', 'Exit Fees', 'Status'])
+    trades['Return'] = trades['Return'] * 100
     trades = trades.round({'Avg Entry Price': 2, 'Avg Exit Price': 2, 'PnL': 2, 'Return': 2})
 
     performance_table = chart.create_table(width=0.2, height=0.8, headings=['Name', 'Value'], func=on_row_click)
-    list_trade_table = chart.create_table(width=1, height=0.2, headings=trades.columns, func=on_row_click)
+    list_trade_table = chart.create_table(width=1, height=0.2, headings=trades.columns, widths=(0.05, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05), func=on_row_click)
 
     stats = per.stats()
     for colum in stats.axes[0].values:
