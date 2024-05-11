@@ -1,6 +1,6 @@
 import pandas as pd
 from lightweight_charts import Chart
-from lib_ta import optimal, review_performance, all_performance
+from lib_ta import optimal, review_performance
 
 def plot_marker(values):
     res = []
@@ -19,20 +19,19 @@ def plot_histogram(_name, _color):
     histogram = chart.create_histogram(name=_name, color=_color, scale_margin_bottom=0.98)
     histogram.set(df)
 
-def performance(chart):
-    action = chart.topbar['Analysis'].value
-    if action == 'performance':
-        all_performance()
+def format(value, format_str='%'):
+    try:
+        return str(round(float(value), 2)) + format_str
+    except:
+        return value
 
 if __name__ == '__main__':
     # run system
     df = optimal(new_data = True)
 
-    chart = Chart()
-    chart.legend(True)
+    chart = Chart(height=1000, width=2000, inner_height=0.8, inner_width=0.8)
+    chart.legend(visible=True)
     chart.topbar.textbox('symbol', 'BTC-USDT (2h)')
-    chart.topbar.switcher('Analysis',('Analysis', 'performance'),
-                          func=performance)
 
     # plot_histogram('cmf', 'rgba(243, 247, 70, 0.5)')
     # plot_histogram('tsi', 'rgba(44, 130, 201, 0.5)')
@@ -50,10 +49,30 @@ if __name__ == '__main__':
     # plot_histogram('long', 'rgba(3, 201, 169, 1)')
     # plot_histogram('close_long', 'rgba(214, 69, 65, 0.5)')
 
+    per = review_performance(df)
+    # list of trade
+    trades = per.positions.records_readable.sort_values(by='Position Id', ascending=False)
+    # format
+    trades = trades.drop(columns=['Column', 'Size', 'Entry Fees', 'Exit Fees', 'Status'])
+    trades = trades.round({'Avg Entry Price': 2, 'Avg Exit Price': 2, 'PnL': 2, 'Return': 2})
+
+    performance_table = chart.create_table(width=0.2, height=0.8, headings=['Name', 'Value'])
+    list_trade_table = chart.create_table(width=1, height=0.2, headings=trades.columns)
+
+    stats = per.stats()
+    for colum in stats.axes[0].values:
+        if "%" in colum: 
+            performance_table.new_row(colum, format(stats[colum]))
+        else: 
+            performance_table.new_row(colum, format(stats[colum], ''))
+
+    for x in trades.itertuples():
+        values = [v for k,v in x._asdict().items()]
+        values = values[1:]
+        row = list_trade_table.new_row(*values)
+
     chart.set(df)
 
-    res = review_performance(df)
-    print(res.stats())
-    chart.marker_list(plot_marker(res.orders.records_readable.values))
+    chart.marker_list(plot_marker(per.orders.records_readable.values))
 
     chart.show(block=True)
