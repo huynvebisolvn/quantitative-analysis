@@ -25,13 +25,16 @@ def format(value, format_str='%'):
     except:
         return value
 
+def on_row_click():
+    pass
+
 if __name__ == '__main__':
     # run system
     df = optimal(new_data = True)
 
     chart = Chart(height=1000, width=2000, inner_height=0.8, inner_width=0.8)
     chart.legend(visible=True)
-    chart.topbar.textbox('symbol', 'BTC-USDT (2h)')
+    chart.topbar.textbox('symbol', 'BTC-USDT (2H)')
 
     # plot_histogram('cmf', 'rgba(243, 247, 70, 0.5)')
     # plot_histogram('tsi', 'rgba(44, 130, 201, 0.5)')
@@ -56,8 +59,8 @@ if __name__ == '__main__':
     trades = trades.drop(columns=['Column', 'Size', 'Entry Fees', 'Exit Fees', 'Status'])
     trades = trades.round({'Avg Entry Price': 2, 'Avg Exit Price': 2, 'PnL': 2, 'Return': 2})
 
-    performance_table = chart.create_table(width=0.2, height=0.8, headings=['Name', 'Value'])
-    list_trade_table = chart.create_table(width=1, height=0.2, headings=trades.columns)
+    performance_table = chart.create_table(width=0.2, height=0.8, headings=['Name', 'Value'], func=on_row_click)
+    list_trade_table = chart.create_table(width=1, height=0.2, headings=trades.columns, func=on_row_click)
 
     stats = per.stats()
     for colum in stats.axes[0].values:
