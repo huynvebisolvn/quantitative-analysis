@@ -10,25 +10,19 @@ pip install -r requirements.txt
 
 ![data_flow](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/270bd072-db23-4a77-a3d7-7f4c04c0c29c)
 
-# local_charts.py
+# lightweight charts - local_charts.py
 lightweight charts in local - like tradingview charts
 
-![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/7e5b519c-28f8-4b54-b272-ab81c4279ecf)
+![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/14d764b0-df5d-42e3-a583-fbada4e5c263)
 
-# local_vectorbt.py
+# analysis performance - local_vectorbt.py
 ## analysis performance for trading strategy
 
 ![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/892b52aa-c1eb-4b9f-8ffc-bf7cbed11eee)
 
 ![transition](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/28b1d1c7-012b-4dc8-a924-0243e20ed40d)
 
-## backtest for trading strategy
-
-![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/05f317f5-18a6-4540-8007-233e3a3a8a81)
-
-![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/818bfa8a-9b6d-4cf1-a841-d6e95cdd8362)
-
-# optimal_tradingview.py
+# tradingview - optimal_tradingview.py
 analysis performance and optimal in tradingview by selenium
 
 https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/607dddb7-a284-4ebb-a8fd-caa6a7063e8d
