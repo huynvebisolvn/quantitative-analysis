@@ -30,7 +30,7 @@ def on_row_click():
 
 if __name__ == '__main__':
     # run system
-    df = optimal(new_data = True)
+    df = optimal(in_year= 2024, new_data = True)
 
     chart = Chart(height=1000, width=2000, inner_height=0.8, inner_width=0.8)
     chart.legend(visible=True)

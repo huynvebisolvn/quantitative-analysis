@@ -79,7 +79,7 @@ def signal(df):
 
     df['close_long'] = np.where(df['close'] <= df['trailingstop'], True, False)
 
-def optimal(file = 'BTCUSDT.csv', year = 2024, new_data = False,
+def optimal(file = 'BTCUSDT.csv', in_year = None, max_year = None, new_data = False,
             param_cmf = 9,
             param_tsi_fast = 38,
             param_tsi_slow = 39,
@@ -98,7 +98,10 @@ def optimal(file = 'BTCUSDT.csv', year = 2024, new_data = False,
     # filter by year
     timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)
     df['year'] = timeConvert.dt.year
-    df = df.loc[df['year'] <= year]
+    if in_year != None:
+        df = df.loc[df['year'] == in_year]
+    if max_year != None:
+        df = df.loc[df['year'] <= max_year]
 
     cmf(df, param_cmf)
     tsi(df, param_tsi_fast, param_tsi_slow)

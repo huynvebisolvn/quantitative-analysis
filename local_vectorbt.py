@@ -79,13 +79,13 @@ def plotly_bar(df, file, show_max: False):
     fig.update_layout(showlegend=False, title_text="Quantitative Analysis: " + file)
     fig.show()
 
-def get_performance_in_range(file, year=2024, max_range=300, is_plot=True):
+def get_performance_in_range(file, max_year=None, max_range=300, is_plot=True):
     rs = []
     for i in range(max_range):
         # 9;17;26;33;42;65;76;129;172; 200~257
         temp_df = optimal(
             file = file,
-            year = year,
+            max_year = max_year,
             param_cmf = 9, #10 #9
             param_tsi_fast = 38, #26 #34 #38
             param_tsi_slow = 39, #33 37 39
@@ -101,7 +101,7 @@ def get_performance_in_range(file, year=2024, max_range=300, is_plot=True):
         performance = review_performance(temp_df)
         stats = performance.stats()
         stats_by_year = {
-            'year': year,
+            'year': max_year,
             'value': i,
             'total_return':      stats['Total Return [%]'],
             'max_drawdown':      stats['Max Drawdown [%]'],
@@ -123,7 +123,7 @@ def get_performance_in_range(file, year=2024, max_range=300, is_plot=True):
 def create_optimal_transition(file, max_range=300):
     rs_for_all = []
     for year in range(2011, 2025):
-        rs = get_performance_in_range(file=file, year=year, max_range=max_range, is_plot=False)
+        rs = get_performance_in_range(file=file, max_year=year, max_range=max_range, is_plot=False)
         rs_for_all = rs_for_all + rs
     df_for_all = pd.DataFrame(rs_for_all)
     df_for_all.to_csv('./data/temp/'+'transition_'+file, index=False)
@@ -141,7 +141,7 @@ def create_transition_chart(file, colum):
         f.layout.update(yaxis_range = [0, range_map[f.name]])
     fig.show()
 
-get_performance_in_range('BTCUSDT.csv', year=2024, max_range=300, is_plot=True)
+get_performance_in_range('BTCUSDT.csv', max_range=300, is_plot=True)
 
 create_optimal_transition('BTCUSD.csv', max_range = 300)
 create_transition_chart('BTCUSD.csv', 'total_return')
