@@ -26,7 +26,7 @@ def performance(chart):
 
 if __name__ == '__main__':
     # run system
-    df = optimal()
+    df = optimal(new_data = True)
 
     chart = Chart()
     chart.legend(True)

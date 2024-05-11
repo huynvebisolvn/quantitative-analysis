@@ -79,7 +79,7 @@ def signal(df):
 
     df['close_long'] = np.where(df['close'] <= df['trailingstop'], True, False)
 
-def optimal(file = 'BTCUSDT.csv', year = 2024,
+def optimal(file = 'BTCUSDT.csv', year = 2024, new_data = False,
             param_cmf = 9,
             param_tsi_fast = 38,
             param_tsi_slow = 39,
@@ -93,7 +93,7 @@ def optimal(file = 'BTCUSDT.csv', year = 2024,
             param_senkou_span_offset = 32):
 
     # fetch new ohlcv
-    df = fetch_ohlcv(file, block_fetch=True)
+    df = fetch_ohlcv(file, new_data)
 
     # filter by year
     timeConvert = pd.to_datetime(df['time'], errors='coerce',utc=False)

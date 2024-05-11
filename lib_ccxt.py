@@ -6,12 +6,12 @@ API_KEY = 'kg9qTIJ3s0rodaAID0Q75RzETq6gQfFKOj7XT5AG6Koy8FQXwfzQ1glGoNTfLyFI'
 API_SECRET = '5dyV8XTuuxaSLBjMoah5FPwZMOalMDVQefWKqqR9cj8UtETYGEfbaWqkcrmMyoMy'
 exchange = ccxt.binance({ 'apiKey': API_KEY, 'secret': API_SECRET, 'enableRateLimit': True, 'options': {'defaultType': 'spot', 'adjustForTimeDifference': True } })
 
-def fetch_ohlcv(csv, block_fetch=True):
+def fetch_ohlcv(csv, new_data=False):
     df_old = pd.read_csv('./data/'+csv)
     # delete incomplete data lines
     df_old = df_old[:-1]
 
-    if csv == 'BTCUSD.csv' or block_fetch:
+    if csv == 'BTCUSD.csv' or not new_data:
         return df_old
 
     last_Time = df_old.iloc[-1]['time']
