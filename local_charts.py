@@ -90,7 +90,7 @@ if __name__ == '__main__':
     chart.set(df)
     chart.marker_list(plot_marker(per.orders.records_readable.values))
     # update realtime
-    async_chart_update(chart, 0.25)
+    # async_chart_update(chart, 0.25)
 
     chart.show(block=True)
 
