@@ -29,7 +29,7 @@ def format(value, format_str='%'):
     except:
         return value
 
-def on_row_click():
+def on_row_click(row):
     pass
 
 def async_chart_update(chart, timer_update):
