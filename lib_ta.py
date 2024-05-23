@@ -117,13 +117,16 @@ def review_performance(temp_df):
     close = temp_df.get('close')
     entries = temp_df['long']
     exits = temp_df['close_long']
-    res = vbt.Portfolio.from_signals(close,
-                                    entries,
-                                    exits,
-                                    freq='2h',
-                                    init_cash=1000,
-                                    direction='longonly',
-                                    size=1,
-                                    size_type=SizeType.Percent,
-                                    fixed_fees=0.01)
+    res = vbt.Portfolio.from_signals(
+        close,
+        entries,
+        exits,
+        freq='2h',
+        init_cash=1000,
+        direction='longonly',
+        size=1,
+        size_type=SizeType.Percent,
+        fixed_fees=0.01,
+        slippage=0.001,
+    )
     return res
