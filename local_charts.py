@@ -1,7 +1,7 @@
 import pandas as pd
 import threading
 from lightweight_charts import Chart
-from lib_ccxt import fetch_ohlcv
+from lib_ccxt import fetch_ohlcv, fetch_balance, fetch_orders
 from lib_ta import optimal, review_performance
 
 isQuit = False
@@ -81,6 +81,20 @@ if __name__ == '__main__':
             performance_table.new_row(colum, format(stats[colum]))
         else: 
             performance_table.new_row(colum, format(stats[colum], ''))
+
+    # add real balance
+    balance = fetch_balance()
+    balanceUsd = round(float(balance['USDT']['free']), 2)
+    balanceBtc = round(float(balance['BTC']['free']), 5)
+
+    performance_table.new_row('⣿⣿⣿⣿⣿⣿⣿Binance⣿⣿⣿⣿⣿⣿⣿', '⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿')
+    performance_table.new_row('USDT: ', str(balanceUsd)+' $')
+    performance_table.new_row('BTC: ', str(balanceBtc)+' BTC')
+
+     # add real balance
+    orders = fetch_orders()
+    for idx, order in enumerate(orders):
+        performance_table.new_row(str(idx+1)+': '+order['side'], order['average'])
 
     for x in trades.itertuples():
         values = [v for k,v in x._asdict().items()]

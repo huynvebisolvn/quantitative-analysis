@@ -27,3 +27,11 @@ def fetch_ohlcv(csv, new_data=False):
         out = pd.concat([df_old, df_new]).drop_duplicates().reset_index(drop=True)
         out.to_csv('./data/'+csv, index=False)
         return out
+
+def fetch_balance():
+    return exchange.fetch_balance()
+
+def fetch_orders():
+    last_trade = exchange.fetch_orders(symbol='BTC/USDT', limit=10)
+    last_trade.reverse()
+    return last_trade
