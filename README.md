@@ -8,17 +8,17 @@ pip install -r requirements.txt
 
 # overview of data flow
 
-![data_flow](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/270bd072-db23-4a77-a3d7-7f4c04c0c29c)
+![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/d98cb206-230d-452e-83eb-c490ff9fa4fd)
 
 # lightweight charts - local_charts.py
 lightweight charts in local - like tradingview charts
 
-![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/14d764b0-df5d-42e3-a583-fbada4e5c263)
+![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/3eb4f071-4706-44cd-9b43-264c10c69809)
 
 # analysis performance - local_vectorbt.py
 ## analysis performance for trading strategy
 
-![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/892b52aa-c1eb-4b9f-8ffc-bf7cbed11eee)
+![image](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/e252f4e7-448b-4d85-b889-5572829a959b)
 
 ![transition](https://github.com/huynvebisolvn/quantitative-analysis/assets/97073896/28b1d1c7-012b-4dc8-a924-0243e20ed40d)
 
@@ -33,10 +33,4 @@ on run
 	do shell script "cd /Users/nguyenhuy/Documents/GitHub/quantitative-analysis/; /opt/homebrew/bin/python3.11 /Users/nguyenhuy/Documents/GitHub/quantitative-analysis/local_charts.py"
 	quit
 end run
-```
-
-# aes
-```
-select pgp_sym_encrypt('password','key','compress-algo=1, cipher-algo=aes256'));
-select pgp_sym_decrypt('hash','key');
 ```
