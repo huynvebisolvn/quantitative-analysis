@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # add real balance
     balance = fetch_balance()
     balanceUsd = round(float(balance['USDT']['free']), 2)
-    balanceBtc = round(float(balance['BTC']['free']), 5)
+    balanceBtc = round(float(balance['BTC']['free']), 4)
 
     performance_table.new_row('⣿⣿⣿⣿⣿⣿⣿Binance⣿⣿⣿⣿⣿⣿⣿', '⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿')
     performance_table.new_row('USD: ', str(balanceUsd)+' $')
