@@ -127,6 +127,6 @@ def review_performance(temp_df):
         size=1,
         size_type=SizeType.Percent,
         fixed_fees=0.01,
-        slippage=0.001,
+        # slippage=0.001,
     )
     return res

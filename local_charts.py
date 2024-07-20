@@ -30,6 +30,8 @@ def format(value, format_str='%'):
         return value
 
 def on_row_click(row):
+    df_update = fetch_ohlcv('BTCUSDT.csv', new_data=True)
+    chart.update(df_update.iloc[-1])
     pass
 
 def async_chart_update(chart, timer_update):
