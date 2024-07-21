@@ -89,7 +89,8 @@ if __name__ == '__main__':
     balanceUsd = round(float(balance['USDT']['free']), 2)
     balanceBtc = round(float(balance['BTC']['free']), 4)
 
-    performance_table.new_row('⣿⣿⣿⣿⣿⣿⣿Binance⣿⣿⣿⣿⣿⣿⣿', '⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿')
+    estbalance = round(balanceUsd + balanceBtc * (df['close'].values[len(df['close'].values) - 1]), 2)
+    performance_table.new_row('⣿⣿⣿⣿⣿⣿⣿⣿Binance⣿⣿⣿⣿⣿⣿⣿⣿', str(estbalance)+' $')
     performance_table.new_row('USD: ', str(balanceUsd)+' $')
     performance_table.new_row('BTC: ', str(balanceBtc)+' BTC')
 
