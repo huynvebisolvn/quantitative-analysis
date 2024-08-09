@@ -4,8 +4,6 @@ from lightweight_charts import Chart
 from lib_ccxt import fetch_ohlcv, fetch_balance, fetch_orders
 from lib_ta import optimal, review_performance
 
-isQuit = False
-
 def plot_marker(values):
     res = []
     for value in values:
@@ -33,14 +31,6 @@ def on_row_click(row):
     df_update = fetch_ohlcv('BTCUSDT.csv', new_data=True)
     chart.update(df_update.iloc[-1])
     pass
-
-def async_chart_update(chart, timer_update):
-    if not isQuit:
-        df_update = fetch_ohlcv('BTCUSDT.csv', new_data=True)
-        chart.update(df_update.iloc[-1])
-        threading.Timer(timer_update, async_chart_update, [chart, timer_update]).start()
-    else:
-        print('END!')
 
 if __name__ == '__main__':
     # run system
@@ -106,10 +96,5 @@ if __name__ == '__main__':
 
     chart.set(df)
     chart.marker_list(plot_marker(per.orders.records_readable.values))
-    # update realtime
-    # async_chart_update(chart, 0.25)
 
     chart.show(block=True)
-
-    # quit threading when close chart
-    isQuit = True
